@@ -502,8 +502,8 @@ def setup_package():
 
     metadata = dict(
         name='nampy',
-        maintainer="NumPy Developers",
-        maintainer_email="numpy-discussion@python.org",
+        maintainer="NAmPy Developers",
+        maintainer_email="nampy-discussion@python.org",
         description="Fundamental package for array computing in Python",
         long_description=Path("README.md").read_text(encoding="utf-8"),
         long_description_content_type="text/markdown",
@@ -511,7 +511,7 @@ def setup_package():
         author="Travis E. Oliphant et al.",
         download_url="https://github.com/jonis100/nampy/releases/tag/v_01",
         project_urls={
-            "Bug Tracker": "https://github.com/numpy/numpy/issues",
+            "Bug Tracker": "https://github.com/jonis100/nampy",
             "Documentation": get_docs_url(),
             "Source Code": "https://github.com/jonis100/nampy",
         },
