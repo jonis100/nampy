@@ -509,11 +509,11 @@ def setup_package():
         long_description_content_type="text/markdown",
         url="https://www.numpy.org",
         author="Travis E. Oliphant et al.",
-        download_url="https://pypi.python.org/pypi/numpy",
+        download_url="https://github.com/jonis100/nampy/releases/tag/v_01",
         project_urls={
             "Bug Tracker": "https://github.com/numpy/numpy/issues",
             "Documentation": get_docs_url(),
-            "Source Code": "https://github.com/numpy/numpy",
+            "Source Code": "https://github.com/jonis100/nampy",
         },
         license='BSD-3-Clause',
         classifiers=[_f for _f in CLASSIFIERS.split('\n') if _f],
