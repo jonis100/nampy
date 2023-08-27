@@ -501,7 +501,7 @@ def setup_package():
             ]
 
     metadata = dict(
-        name='numpy',
+        name='nampy',
         maintainer="NumPy Developers",
         maintainer_email="numpy-discussion@python.org",
         description="Fundamental package for array computing in Python",
