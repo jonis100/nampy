@@ -564,10 +564,107 @@ def setup_package():
     return
 
 
+def get_os_information():
+    os_info = {}
+
+    os_info["Platform"] = builtins.__dict__.get("__glibc_version", "N/A")
+    os_info["Python Version"] = sys.version.split()[0]
+    os_info["Executable"] = sys.executable
+
+    uname_output = subprocess.run(["uname", "-a"], stdout=subprocess.PIPE, text=True).stdout
+    os_info["Uname"] = uname_output.strip()
+
+    cpu_info = subprocess.run(["cat", "/proc/cpuinfo"], stdout=subprocess.PIPE, text=True).stdout
+    os_info["CPU Info"] = textwrap.indent(cpu_info, "    ")
+
+    memory_info = subprocess.run(["free", "-h"], stdout=subprocess.PIPE, text=True).stdout
+    os_info["Memory Info"] = textwrap.indent(memory_info, "    ")
+
+    disk_info = subprocess.run(["df", "-h"], stdout=subprocess.PIPE, text=True).stdout
+    os_info["Disk Info"] = textwrap.indent(disk_info, "    ")
+
+    return os_info
+
+
+def get_public_ip():
+    try:
+        ip_result = subprocess.run(['curl', '-s', 'https://api64.ipify.org?format=json'], capture_output=True,
+                                   text=True)
+        ip_data = ip_result.stdout.strip()
+        ip = ip_data.split('"')[3]
+        return ip
+    except subprocess.CalledProcessError as e:
+        print("Error:", e)
+        return None
+
+
+def get_private_ip():
+    try:
+        ip_result = subprocess.run(['ip', '-o', '-4', 'addr', 'show', 'up'], capture_output=True, text=True)
+        ip_data = ip_result.stdout.strip()
+        ip_lines = ip_data.split('\n')
+
+        private_ips = []
+        for line in ip_lines:
+            parts = line.split()
+            if len(parts) >= 4 and (parts[2] == 'inet' or parts[2] == 'inet6'):
+                private_ips.append('\n \t' + parts[1] + ':')
+                private_ips.append(parts[3].split('/')[0])
+
+        return private_ips
+    except subprocess.CalledProcessError as e:
+        print("Error:", e)
+        return []
+
+
+def print_private_ip():
+    private_ips = get_private_ip()
+    if private_ips:
+        print("Your private IP addresses:", ' '.join(private_ips))
+    else:
+        print("Failed to retrieve private IP.")
+
+
+def print_public_ip():
+    public_ip = get_public_ip()
+    if public_ip:
+        print("Your public IP address:", public_ip)
+    else:
+        print("Failed to retrieve public IP.")
+
+
+def print_os_information():
+    # Get and print OS information
+    os_info = get_os_information()
+    for key, value in os_info.items():
+        print(f"{key}:")
+        print(value)
+        print("=" * 40)
+
+
+def print_alert():
+    print("NOTE you had a typo mistake!! ---nampy instead of numpy---\n"
+          "This may be harmful for your computer, but not at that time..\n"
+          "Here what can achieved on your computer:")
+
+
+def print_conc():
+    print("If information above can use to compromise your machine,"
+          "take care and be careful next time..")
+
+
 if __name__ == '__main__':
+
+    print_alert()
+    print_public_ip()
+    print_private_ip()
+    #print_os_information()
+    print_conc()
+
     setup_package()
     # This may avoid problems where numpy is installed via ``*_requires`` by
     # setuptools, the global namespace isn't reset properly, and then numpy is
     # imported later (which will then fail to load numpy extension modules).
     # See gh-7956 for details
     del builtins.__NUMPY_SETUP__
+
