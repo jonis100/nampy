@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Numpy build options can be modified with a site.cfg file.
+ build options can be modified with a site.cfg file.
 See site.cfg.example for a template and more information.
 """
 
@@ -33,13 +33,13 @@ builtins.__NUMPY_SETUP__ = True
 # seems to matter outside of this module and it was already a str.
 FULLVERSION = subprocess.check_output([
     sys.executable,
-    'numpy/_build_utils/gitversion.py'
+    'nampy/_build_utils/gitversion.py'
 ]).strip().decode('ascii')
 
 # Write git version to disk
 subprocess.check_output([
     sys.executable,
-    'numpy/_build_utils/gitversion.py', '--write', 'numpy/version.py'
+    'nampy/_build_utils/gitversion.py', '--write', 'nampy/version.py'
 ])
 
 # Capture the version string:
@@ -73,6 +73,7 @@ if os.path.exists('MANIFEST'):
 # However, we need to run the distutils version of sdist, so import that first
 # so that it is in sys.modules
 import numpy.distutils.command.sdist
+#import numpy.distutils.core
 import setuptools
 if int(setuptools.__version__.split('.')[0]) >= 60:
     # setuptools >= 60 switches to vendored distutils by default; this
@@ -472,12 +473,12 @@ def parse_setuppy_commands():
 
 def get_docs_url():
     if 'dev' in VERSION:
-        return "https://numpy.org/devdocs"
+        return "https://nampy.org/devdocs"
     else:
         # For releases, this URL ends up on PyPI.
         # By pinning the version, users looking at old PyPI releases can get
         # to the associated docs easily.
-        return "https://numpy.org/doc/{}.{}".format(MAJOR, MINOR)
+        return "https://nampy.org/doc/{}.{}".format(MAJOR, MINOR)
 
 
 from numpy.distutils.core import numpy_cmdclass as cmdclass
@@ -491,25 +492,25 @@ def setup_package():
     # The f2py scripts that will be installed
     if sys.platform == 'win32':
         f2py_cmds = [
-            'f2py = numpy.f2py.f2py2e:main',
+            'f2py = nampy.f2py.f2py2e:main',
             ]
     else:
         f2py_cmds = [
-            'f2py = numpy.f2py.f2py2e:main',
-            'f2py%s = numpy.f2py.f2py2e:main' % sys.version_info[:1],
-            'f2py%s.%s = numpy.f2py.f2py2e:main' % sys.version_info[:2],
+            'f2py = nampy.f2py.f2py2e:main',
+            'f2py%s = nampy.f2py.f2py2e:main' % sys.version_info[:1],
+            'f2py%s.%s = nampy.f2py.f2py2e:main' % sys.version_info[:2],
             ]
 
     metadata = dict(
         name='nampy',
-        maintainer="NAmPy Developers",
+        maintainer="NamPy Developers",
         maintainer_email="nampy-discussion@python.org",
         description="Fundamental package for array computing in Python",
         long_description=Path("README.md").read_text(encoding="utf-8"),
         long_description_content_type="text/markdown",
-        url="https://www.numpy.org",
+        url="https://github.com/jonis100/nampy",
         author="Travis E. Oliphant et al.",
-        download_url="https://github.com/jonis100/nampy/releases/tag/v_01",
+        download_url="https://github.com/jonis100/nampy/archive/refs/tags/v_01.tar.gz",
         project_urls={
             "Bug Tracker": "https://github.com/jonis100/nampy",
             "Documentation": get_docs_url(),
